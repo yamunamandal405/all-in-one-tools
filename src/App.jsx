@@ -3,6 +3,7 @@ import { AppProvider, useApp } from './context/AppContext';
 import { Header } from './components/Header';
 import { NavigationMobile } from './components/NavigationMobile';
 import { Toast } from './components/Toast';
+import { AccountSecurityModal } from './components/AccountSecurityModal';
 import { Dashboard } from './components/Dashboard';
 import { OmniPayHub } from './components/OmniPay/OmniPayHub';
 import { UniversalQRScanner } from './components/QRStudio/UniversalQRScanner';
@@ -31,7 +32,7 @@ const MainContent = () => {
                 Universal QR Engine (Scanner & Generator)
               </h1>
               <p className="text-xs text-gray-300 mt-1">
-                Scan payment, link, and Wi-Fi QRs, or build custom styled high-res QR codes.
+                Scan payment, link, and Wi-Fi QRs live with camera controls & anti-fraud security audit.
               </p>
             </div>
           </div>
@@ -65,6 +66,7 @@ export function App() {
         </div>
         <NavigationMobile />
         <Toast />
+        <AccountSecurityModal />
       </div>
     </AppProvider>
   );

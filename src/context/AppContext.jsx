@@ -65,11 +65,26 @@ export const AppProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : INITIAL_TRANSACTIONS;
   });
 
+  // Account Security & Protection State
+  const [isAccountLocked, setIsAccountLocked] = useState(false);
+  const [securitySettings, setSecuritySettings] = useState(() => {
+    const saved = localStorage.getItem('omni_security_settings');
+    return saved ? JSON.parse(saved) : {
+      shieldActive: true,
+      biometricEnabled: true,
+      antiPhishingCode: 'OMNI-7892',
+      dailyLimit: 100000,
+      trustedDevice: true,
+      scanFraudCheck: true
+    };
+  });
+
   // Modals state
   const [transferModalOpen, setTransferModalOpen] = useState(false);
   const [transferInitialData, setTransferInitialData] = useState(null);
   const [receiptModalData, setReceiptModalData] = useState(null);
   const [fileSenderModalData, setFileSenderModalData] = useState(null);
+  const [securityModalOpen, setSecurityModalOpen] = useState(false);
   const [toast, setToast] = useState(null);
 
   // Custom Tools state
@@ -90,6 +105,10 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem('omni_custom_tools', JSON.stringify(customTools));
   }, [customTools]);
 
+  useEffect(() => {
+    localStorage.setItem('omni_security_settings', JSON.stringify(securitySettings));
+  }, [securitySettings]);
+
   const showToast = (message, type = 'info') => {
     setToast({ message, type });
     setTimeout(() => {
@@ -97,12 +116,35 @@ export const AppProvider = ({ children }) => {
     }, 4000);
   };
 
+  const toggleAccountLock = () => {
+    setIsAccountLocked(prev => {
+      const next = !prev;
+      showToast(next ? 'Account Emergency Frozen / Locked' : 'Account Unlocked via Biometric Check', next ? 'warning' : 'success');
+      return next;
+    });
+  };
+
   const openTransferModal = (data = null) => {
+    if (isAccountLocked) {
+      showToast('Account is currently locked. Unlock in Security Settings to pay.', 'error');
+      setSecurityModalOpen(true);
+      return;
+    }
     setTransferInitialData(data);
     setTransferModalOpen(true);
   };
 
   const processPayment = (paymentData) => {
+    if (isAccountLocked) {
+      showToast('Transaction blocked: Account is frozen.', 'error');
+      return;
+    }
+
+    if (parseFloat(paymentData.amount) > securitySettings.dailyLimit) {
+      showToast(`Transaction exceeds daily security limit of ₹${securitySettings.dailyLimit.toLocaleString()}`, 'error');
+      return;
+    }
+
     const newTxn = {
       id: 'TXN' + Math.floor(100000 + Math.random() * 900000),
       type: 'sent',
@@ -117,7 +159,6 @@ export const AppProvider = ({ children }) => {
       note: paymentData.note || ''
     };
 
-    // Update wallet or bank balance
     if (paymentData.useWallet) {
       setWalletBalance(prev => Math.max(0, prev - parseFloat(paymentData.amount)));
     }
@@ -150,6 +191,12 @@ export const AppProvider = ({ children }) => {
       bankAccounts,
       contacts,
       transactions,
+      isAccountLocked,
+      toggleAccountLock,
+      securitySettings,
+      setSecuritySettings,
+      securityModalOpen,
+      setSecurityModalOpen,
       transferModalOpen,
       setTransferModalOpen,
       transferInitialData,

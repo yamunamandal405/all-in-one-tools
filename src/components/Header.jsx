@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { 
   Zap, QrCode, Wallet, Search, Sparkles, FileText, Image as ImageIcon, 
-  Wrench, FileSearch, ArrowRightLeft, Grid, Plus, CheckCircle, Smartphone
+  Wrench, FileSearch, ArrowRightLeft, Grid, Plus, ShieldCheck, Lock, Smartphone
 } from 'lucide-react';
 
 export const Header = () => {
   const { 
     activeTab, setActiveTab, walletBalance, openTransferModal, showToast,
-    setWalletBalance 
+    setWalletBalance, isAccountLocked, setSecurityModalOpen 
   } = useApp();
   const [searchQuery, setSearchQuery] = useState('');
   const [topupOpen, setTopupOpen] = useState(false);
@@ -105,9 +105,22 @@ export const Header = () => {
             )}
           </div>
 
-          {/* Wallet Balance Pill & Quick Actions */}
-          <div className="flex items-center gap-3">
+          {/* Wallet Balance Pill, Account Shield & Quick Actions */}
+          <div className="flex items-center gap-2.5">
             
+            {/* Account Security Badge */}
+            <button
+              onClick={() => setSecurityModalOpen(true)}
+              className={`p-2 rounded-full border transition flex items-center justify-center ${
+                isAccountLocked 
+                  ? 'bg-rose-500/20 text-rose-300 border-rose-500/40 animate-pulse' 
+                  : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+              }`}
+              title="Account Security Dashboard"
+            >
+              {isAccountLocked ? <Lock className="w-4 h-4 text-rose-400" /> : <ShieldCheck className="w-4 h-4 text-emerald-400" />}
+            </button>
+
             {/* Wallet Pill */}
             <div className="flex items-center bg-slate-900/80 border border-purple-500/30 rounded-full p-1 pl-3 shadow-inner">
               <div className="flex items-center gap-2 mr-2">
