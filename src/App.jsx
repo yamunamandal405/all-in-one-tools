@@ -6,6 +6,7 @@ import { Footer } from './components/Footer';
 import { NavigationMobile } from './components/NavigationMobile';
 import { Toast } from './components/Toast';
 import { AccountSecurityModal } from './components/AccountSecurityModal';
+import { SystemUpdateModal } from './components/SystemUpdateModal';
 import { Dashboard } from './components/Dashboard';
 import { UniversalQRScanner } from './components/QRStudio/UniversalQRScanner';
 import { QRGenerator } from './components/QRStudio/QRGenerator';
@@ -70,7 +71,7 @@ export function AppLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen flex bg-black text-white selection:bg-purple-600 selection:text-white font-sans text-base">
+    <div className="min-h-screen flex bg-black dark:bg-black light:bg-slate-50 text-white dark:text-white light:text-slate-900 selection:bg-purple-600 selection:text-white font-sans text-base transition-colors duration-300">
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
       
       <div className="flex-1 flex flex-col min-w-0">
@@ -82,6 +83,7 @@ export function AppLayout() {
       </div>
 
       <NavigationMobile />
+      <SystemUpdateModal />
       <Toast />
     </div>
   );
@@ -96,3 +98,4 @@ export function App() {
 }
 
 export default App;
+

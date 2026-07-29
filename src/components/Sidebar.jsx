@@ -1,13 +1,14 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
+import { ThemeToggle } from './ThemeToggle';
 import { 
   Zap, QrCode, Wallet, FileText, Image as ImageIcon, 
   Wrench, FileSearch, ArrowRightLeft, Grid, ChevronLeft, ChevronRight, 
-  ShieldCheck, Lock
+  ShieldCheck, Lock, RefreshCw
 } from 'lucide-react';
 
 export const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
-  const { activeTab, setActiveTab } = useApp();
+  const { activeTab, setActiveTab, setIsSystemUpdateModalOpen, systemStatus } = useApp();
 
   const navCategories = [
     {
@@ -60,7 +61,7 @@ export const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
                 OmniSuite
               </span>
               <span className="text-xs text-purple-400 font-bold uppercase tracking-wider">
-                Black Edition
+                Pro Platform
               </span>
             </div>
           )}
@@ -120,14 +121,31 @@ export const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
         ))}
       </div>
 
+      {/* Theme Control Bar */}
+      {!isCollapsed && (
+        <div className="px-3 py-2 border-t border-zinc-800 bg-zinc-950/90">
+          <div className="mb-1 text-[10px] font-extrabold text-purple-400 uppercase tracking-wider px-1">
+            Appearance Mode
+          </div>
+          <ThemeToggle compact={false} />
+        </div>
+      )}
+
       {/* Workspace Status Footer */}
-      <div className="p-4 border-t border-zinc-800 bg-black/80">
+      <div 
+        onClick={() => setIsSystemUpdateModalOpen(true)}
+        className="p-4 border-t border-zinc-800 bg-black/80 hover:bg-zinc-900/80 cursor-pointer transition group"
+        title="Open System Update & Diagnostics Center"
+      >
         <div className="flex items-center gap-3">
           <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" />
           {!isCollapsed && (
-            <div className="overflow-hidden">
-              <span className="text-xs font-bold text-white block truncate">Omni Engine v1.0</span>
-              <span className="text-[10px] text-zinc-400 font-medium block truncate">All Systems Operational</span>
+            <div className="overflow-hidden flex-1 flex items-center justify-between">
+              <div>
+                <span className="text-xs font-bold text-white block truncate">Omni Engine v{systemStatus.version}</span>
+                <span className="text-[10px] text-emerald-400 font-medium block truncate">All Systems Operational</span>
+              </div>
+              <RefreshCw className="w-3.5 h-3.5 text-zinc-500 group-hover:text-purple-400 group-hover:rotate-180 transition-all flex-shrink-0" />
             </div>
           )}
         </div>
@@ -136,3 +154,4 @@ export const Sidebar = ({ isCollapsed, setIsCollapsed }) => {
     </aside>
   );
 };
+

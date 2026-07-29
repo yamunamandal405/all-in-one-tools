@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import { ThemeToggle } from './ThemeToggle';
 import { 
   Zap, QrCode, Search, FileText, Image as ImageIcon, 
-  Wrench, FileSearch, ArrowRightLeft, Grid, Globe, Gamepad2, Download, Scan, ShieldCheck 
+  Wrench, FileSearch, ArrowRightLeft, Grid, Globe, Gamepad2, Download, Scan, ShieldCheck, RefreshCw 
 } from 'lucide-react';
 
 export const Header = () => {
-  const { activeTab, setActiveTab } = useApp();
+  const { activeTab, setActiveTab, setIsSystemUpdateModalOpen, systemStatus } = useApp();
   const [searchQuery, setSearchQuery] = useState('');
 
   const navItems = [
@@ -34,7 +35,7 @@ export const Header = () => {
   return (
     <header className="sticky top-0 z-40 shadow-md">
       {/* Top Navbar Row */}
-      <div className="bg-zinc-950 border-b border-zinc-800 text-white">
+      <div className="bg-zinc-950 border-b border-zinc-800 text-white transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             
@@ -92,12 +93,20 @@ export const Header = () => {
               )}
             </div>
 
-            {/* Status & Quick Action */}
+            {/* Controls: Theme Toggle & System Update Action */}
             <div className="flex items-center gap-3">
-              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 text-xs font-bold">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                System Active
-              </div>
+              {/* Dark / White / System Theme Toggle */}
+              <ThemeToggle compact={true} />
+
+              {/* System Active / Update Center Button */}
+              <button
+                onClick={() => setIsSystemUpdateModalOpen(true)}
+                className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/40 text-emerald-300 text-xs font-bold transition active:scale-95 cursor-pointer shadow-sm group"
+                title="System Status & Update Center"
+              >
+                <ShieldCheck className="w-4 h-4 text-emerald-400 group-hover:rotate-12 transition-transform" />
+                <span>v{systemStatus.version} System Active</span>
+              </button>
 
               <button
                 onClick={() => setActiveTab('pdf')}
