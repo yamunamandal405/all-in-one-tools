@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { 
   FileSearch, Search, Upload, Share2, FileText, Image as ImageIcon, 
-  Sparkles, Copy, Download, QrCode, Mail, Smartphone, ExternalLink 
+  Copy, Download, QrCode, Mail, Smartphone, ExternalLink, Filter 
 } from 'lucide-react';
 
 const SAMPLE_INDEXED_FILES = [
@@ -30,10 +30,9 @@ export const AiFileSearchHub = () => {
     }));
 
     setIndexedFiles(prev => [...newIndexed, ...prev]);
-    showToast(`Indexed ${files.length} file(s) for AI search!`, 'success');
+    showToast(`Indexed ${files.length} document(s) for fast search!`, 'success');
   };
 
-  // AI Semantic matching filter
   const filteredFiles = indexedFiles.filter(f => {
     if (!searchQuery) return true;
     const queryLower = searchQuery.toLowerCase();
@@ -48,7 +47,7 @@ export const AiFileSearchHub = () => {
       try {
         await navigator.share({
           title: file.name,
-          text: `Check out ${file.name} shared via OmniSuite Universal File Sender!`,
+          text: `File shared via OmniSuite: ${file.name}`,
           url: window.location.href
         });
         showToast('Shared via System Share!', 'success');
@@ -67,36 +66,36 @@ export const AiFileSearchHub = () => {
       <div className="glass-panel p-6 rounded-3xl border border-purple-500/30 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-black text-white flex items-center gap-2">
-            <Sparkles className="w-7 h-7 text-purple-400" />
-            AI File Search & Universal Cross-App Sender
+            <FileSearch className="w-7 h-7 text-purple-400" />
+            Universal Document Search & Cross-App Sender
           </h1>
           <p className="text-xs text-gray-300 mt-1">
-            Search files by natural language keywords, auto-extract tags, and share to any app, email, or device.
+            Search document index by title, category, or file tag, and export directly to any messaging or email app.
           </p>
         </div>
 
-        {/* File Indexer Drop Button */}
+        {/* File Indexer Button */}
         <label className="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 text-xs font-bold text-white shadow-lg shadow-purple-600/30 flex items-center gap-2 cursor-pointer transition">
           <Upload className="w-4 h-4" />
-          Index Files to Search
+          Index Files to Workspace
           <input type="file" multiple onChange={handleFileUpload} className="hidden" />
         </label>
       </div>
 
-      {/* AI Search Bar */}
+      {/* Search Bar */}
       <div className="glass-panel p-4 rounded-3xl border border-white/10 shadow-xl">
         <div className="relative">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400" />
           <input
             type="text"
-            placeholder="Type AI Search: e.g. 'find receipt from July', 'invoice pdf', 'logo image'..."
+            placeholder="Search documents by keyword, e.g. 'receipt', 'invoice pdf', 'contract'..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-12 pr-4 py-3 text-sm rounded-2xl glass-input font-medium text-white placeholder-gray-400"
           />
         </div>
 
-        {/* Quick Tag Pills */}
+        {/* Quick Filter Pills */}
         <div className="flex gap-2 mt-3 overflow-x-auto">
           {['pdf', 'invoice', 'receipt', 'image', 'contract'].map(tag => (
             <button
@@ -161,7 +160,7 @@ export const AiFileSearchHub = () => {
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <h3 className="text-sm font-bold text-white flex items-center gap-2">
                 <Share2 className="w-4 h-4 text-purple-400" />
-                Universal File Sender
+                Cross-App File Sender
               </h3>
               <button onClick={() => setFileSenderModalData(null)} className="text-xs text-gray-400 hover:text-white">
                 Close
@@ -172,14 +171,12 @@ export const AiFileSearchHub = () => {
               <FileText className="w-6 h-6 text-purple-400" />
               <div className="overflow-hidden">
                 <h4 className="text-xs font-bold text-white truncate">{fileSenderModalData.name}</h4>
-                <p className="text-[10px] text-gray-400">{fileSenderModalData.size || 'Shared Item'}</p>
+                <p className="text-[10px] text-gray-400">{fileSenderModalData.size || 'Shared File'}</p>
               </div>
             </div>
 
             {/* Target Apps Grid */}
             <div className="grid grid-cols-2 gap-3">
-              
-              {/* WhatsApp */}
               <a
                 href={`https://api.whatsapp.com/send?text=${encodeURIComponent('Check out file: ' + fileSenderModalData.name)}`}
                 target="_blank"
@@ -188,30 +185,28 @@ export const AiFileSearchHub = () => {
               >
                 <Smartphone className="w-6 h-6 text-emerald-400 mx-auto mb-1" />
                 <span className="text-xs font-bold text-white block">WhatsApp</span>
-                <span className="text-[9px] text-gray-400">Direct Chat</span>
+                <span className="text-[9px] text-gray-400">Direct Message</span>
               </a>
 
-              {/* Email */}
               <a
                 href={`mailto:?subject=${encodeURIComponent('Shared File: ' + fileSenderModalData.name)}&body=${encodeURIComponent('Please find file attached: ' + fileSenderModalData.name)}`}
                 className="p-3 rounded-2xl glass-card text-center hover:border-blue-500/50 transition block"
               >
                 <Mail className="w-6 h-6 text-blue-400 mx-auto mb-1" />
                 <span className="text-xs font-bold text-white block">Email</span>
-                <span className="text-[9px] text-gray-400">Draft Mail</span>
+                <span className="text-[9px] text-gray-400">Mail Draft</span>
               </a>
-
             </div>
 
             <button
               onClick={() => {
                 navigator.clipboard.writeText(window.location.href);
-                showToast('Sharing link copied to clipboard!', 'info');
+                showToast('Share link copied!', 'info');
               }}
               className="w-full py-2.5 rounded-xl bg-purple-600 font-bold text-xs text-white shadow-lg flex items-center justify-center gap-2"
             >
               <Copy className="w-4 h-4" />
-              Copy Transfer Link
+              Copy Direct Transfer Link
             </button>
 
           </div>

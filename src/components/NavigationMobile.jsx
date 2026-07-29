@@ -7,10 +7,10 @@ export const NavigationMobile = () => {
 
   const mobileTabs = [
     { id: 'home', label: 'Home', icon: Zap },
-    { id: 'pay', label: 'OmniPay', icon: Wallet },
-    { id: 'qr', label: 'Scan QR', icon: QrCode, highlight: true },
-    { id: 'pdf', label: 'PDF', icon: FileText },
-    { id: 'tool-builder', label: 'Designer', icon: Wrench },
+    { id: 'pdf', label: 'PDF Studio', icon: FileText },
+    { id: 'doc-scanner', label: 'Scanner', icon: QrCode, highlight: true },
+    { id: 'image', label: 'Designer', icon: ImageIcon },
+    { id: 'web-designer', label: 'Web Builder', icon: Wrench },
   ];
 
   return (
