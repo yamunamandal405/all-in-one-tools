@@ -19,6 +19,7 @@
     "dev": "vite",
     "server": "node server/index.js",
     "build": "vite build",
+    "deploy": "npm run build && firebase deploy --only hosting",
     "lint": "oxlint",
     "preview": "vite preview"
   },
