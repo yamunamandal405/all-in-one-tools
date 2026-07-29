@@ -19,10 +19,10 @@
   }
 
   body {
-    background-color: #0df7f7;
+    background-color: #09090b;
     background-image:
       radial-gradient(at 0% 0%, rgba(147, 51, 234, 0.15) 0px, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(67, 166, 184, 0.12) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.12) 0px, transparent 50%),
       radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
     background-attachment: fixed;
     color: #f8fafc;
@@ -35,7 +35,7 @@
 
 /* Glassmorphism UI Utility Classes */
 .glass-panel {
-  background: rgba(167, 167, 236, 0.75);
+  background: rgba(15, 15, 22, 0.75);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -43,7 +43,7 @@
 }
 
 .glass-card {
-  background: rgba(172, 95, 216, 0.65);
+  background: rgba(22, 22, 32, 0.65);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -52,14 +52,14 @@
 }
 
 .glass-card:hover {
-  background: rgba(110, 110, 223, 0.85);
+  background: rgba(30, 30, 45, 0.85);
   border-color: rgba(168, 85, 247, 0.4);
   transform: translateY(-2px);
   box-shadow: 0 20px 30px -10px rgba(147, 51, 234, 0.25), 0 0 15px rgba(168, 85, 247, 0.1);
 }
 
 .glass-input {
-  background: rgba(83, 83, 209, 0.8);
+  background: rgba(10, 10, 15, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: #f8fafc;
   font-size: 0.9rem;
@@ -79,7 +79,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #32aab9;
+  background: #09090b;
 }
 
 ::-webkit-scrollbar-thumb {
