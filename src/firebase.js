@@ -8,8 +8,8 @@ const firebaseConfig = {
   projectId: "all-in-one-tools-12464",
   storageBucket: "all-in-one-tools-12464.firebasestorage.app",
   messagingSenderId: "611250912537",
-  appId: "1:611250912537:web:39372e224be3159e9a9988",
-  measurementId: "G-C5J6L80NM1"
+  appId: "1:611250912537:web:8e9c45edbf10351a9a9988",
+  measurementId: "G-TVK42FE6CD"
 };
 
 // Initialize Firebase App
